@@ -1,0 +1,19 @@
+import pandas as pd
+import copy
+
+pax = pd.read_excel(r'C:\Users\Pol\Desktop\MASTER\SEMESTRE 3\Visualització de dades\PAC2\Neteja\data\pax_all_agreements_data_xls.xls')
+
+pax = pax.iloc[:,[0,2,3,5,6,7,8,12,13,18,19]]
+
+new_rows = []
+for i,j in pax.iterrows():
+    if j['Con'].find('/') != -1:
+        list_con = j['Con'].split('/')
+        for con in list_con:
+            j['Con'] = con
+            new_rows.append(copy.copy(j))
+        pax.drop(i, inplace=True)
+
+pax = pax.append(pd.DataFrame(new_rows, columns=pax.columns)).reset_index()
+
+pax.to_excel(r'C:\Users\Pol\Desktop\MASTER\SEMESTRE 3\Visualització de dades\PAC2\Neteja\data\pax_all_agreements_data_PAC4.xlsx')
